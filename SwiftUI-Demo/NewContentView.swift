@@ -33,9 +33,6 @@ class PhotoLoader: ObservableObject {
 struct BlogPostCell: View {
     @ObservedObject var blogPost: BlogPost
     @State private var showFullContent: Bool = false
-    @State private var photoLoadingAttempts = 0
-    private let maxPhotoLoadingAttempts = 5
-    @StateObject private var photoLoader = PhotoLoader()
     
     var formattedCreatedAt: String {
         let dateFormatter = DateFormatter()
@@ -78,10 +75,9 @@ struct BlogPostCell: View {
                 .padding(.top)
             
             if let photos = blogPost.photos, !photos.isEmpty {
-                Text("Photos (\(photos.count))")
+                Text("Photos")
                     .font(.headline)
                     .padding(.top)
-                
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
@@ -97,15 +93,6 @@ struct BlogPostCell: View {
                         }
                     }
                 }
-                
-            } else if blogPost.photos == nil {
-                ProgressView() // Show a loading indicator if photos are not loaded yet
-                    .onAppear {
-                        startPhotoLoadingTimer()
-                    }
-            } else {
-                // Handle case when photos cannot be loaded
-                Text("Photos cannot be loaded")
             }
             
             if let contentHTML = blogPost.contentHtml.data(using: .unicode),
@@ -133,19 +120,6 @@ struct BlogPostCell: View {
             .padding(.top, 5)
         }
         .padding()
-        .onAppear {
-            photoLoader.loadImages(for: blogPost.photos)
-        }
-    }
-    
-    private func startPhotoLoadingTimer() {
-        Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-            photoLoadingAttempts += 1
-            if blogPost.photos == nil && photoLoadingAttempts < maxPhotoLoadingAttempts {
-                // Reload the view
-                photoLoadingAttempts += 1
-            }
-        }
     }
 }
 

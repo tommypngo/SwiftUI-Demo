@@ -19,13 +19,13 @@ class NetworkingService {
             .eraseToAnyPublisher()
     }
     
-//    func fetchPhoto(offset: Int = 0, limit: Int = 20) -> AnyPublisher<PhotoResponse, Error> {
-//        let url = URL(string: "\(baseURL)/photos?offset=\(offset)&limit=\(limit)")!
-//        return URLSession.shared.dataTaskPublisher(for: url)
-//            .map { $0.data }
-//            .decode(type: PhotoResponse.self, decoder: JSONDecoder())
-//            .eraseToAnyPublisher()
-//    }
+    func fetchPhoto(offset: Int = 0, limit: Int = 20) -> AnyPublisher<PhotoResponse, Error> {
+        let url = URL(string: "\(baseURL)/photos?offset=\(offset)&limit=\(limit)")!
+        return URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data }
+            .decode(type: PhotoResponse.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+    }
     
     func fetchPhotos(offset: Int = 0, limit: Int = 20) -> AnyPublisher<PhotoResponse, Error> {
         let url = URL(string: "\(baseURL)/photos?offset=\(offset)&limit=\(limit)")!
