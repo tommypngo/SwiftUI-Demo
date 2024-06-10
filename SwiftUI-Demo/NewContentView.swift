@@ -7,29 +7,6 @@
 
 import SwiftUI
 
-class PhotoLoader: ObservableObject {
-    @Published private var imageCache = [String: UIImage]()
-
-    func image(for url: String) -> UIImage? {
-        return imageCache[url]
-    }
-
-    func loadImages(for photos: [Photo]?) {
-        guard let photos = photos else { return }
-        for photo in photos {
-            if let url = URL(string: photo.url) {
-                URLSession.shared.dataTask(with: url) { data, _, _ in
-                    if let data = data, let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            self.imageCache[photo.url] = image
-                        }
-                    }
-                }.resume()
-            }
-        }
-    }
-}
-
 struct BlogPostCell: View {
     @ObservedObject var blogPost: BlogPost
     @State private var showFullContent: Bool = false
@@ -47,6 +24,16 @@ struct BlogPostCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             
+            Text(blogPost.title)
+                .font(.title)
+                .bold()
+            
+            
+            
+            Text("Category: \(blogPost.category)")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+            
             if let photoURL = URL(string: blogPost.photoUrl) {
                 AsyncImage(url: photoURL) { image in
                     image
@@ -57,41 +44,12 @@ struct BlogPostCell: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical)
-            }
-            
-            Text(blogPost.title)
-                .font(.title)
-                .bold()
-            
-            Text(blogPost.description)
-                .font(.body)
-            
-            Text("Category: \(blogPost.category)")
-                .font(.subheadline)
-                .foregroundColor(.gray)
-            Text("Created at: \(formattedCreatedAt)")
-                .font(.subheadline)
-                .foregroundColor(.gray)
-                .padding(.top)
-            
-            if let photos = blogPost.photos, !photos.isEmpty {
-                Text("Photos")
-                    .font(.headline)
-                    .padding(.top)
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(photos) { photo in
-                            AsyncImage(url: URL(string: photo.url)) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(width: 100, height: 100)
-                        }
-                    }
+                HStack {
+                    Spacer()
+                    Text(blogPost.description)
+                        .font(.footnote)
+                    Spacer()
                 }
             }
             
@@ -118,6 +76,32 @@ struct BlogPostCell: View {
                 }
             }
             .padding(.top, 5)
+            
+            if !blogPost.photos.isEmpty {
+                Text("Photos (\(blogPost.photos.count))")
+                    .font(.headline)
+                    .padding(.top)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(blogPost.photos) { photo in
+                            AsyncImage(url: URL(string: photo.url)) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(width: 100, height: 100)
+                        }
+                    }
+                }
+            }
+            
+            Text("Created at: \(formattedCreatedAt)")
+                .font(.footnote)
+                .foregroundColor(.gray)
+                .padding(.top)
         }
         .padding()
     }
@@ -133,6 +117,9 @@ struct NewContentView: View {
                 BlogPostCell(blogPost: blogPost)
             }
             .navigationBarTitle("Blog Posts")
+            .onAppear(perform: {
+                viewModel.loadData()
+            })
         }
     }
 }

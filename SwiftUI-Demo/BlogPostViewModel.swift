@@ -6,63 +6,57 @@ class BlogPostViewModel: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     private let networkingService = NetworkingService()
     
-    init() {
+    func loadData() {
         fetchBlogPosts()
     }
-
+    
     private func fetchBlogPosts() {
-        networkingService.fetchBlogPosts()
-            .receive(on: DispatchQueue.global(qos: .background))
+        networkingService.fetch(endpoint: .blogPosts)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .failure(let error):
                     print("Error fetching blog posts: \(error)")
                 case .finished:
-                    print("Fetched blog posts successfully")
+                    break
                 }
-            }, receiveValue: { [weak self] blogPostResponse in
-                DispatchQueue.main.async {
-                    self?.blogPosts = blogPostResponse.blogs
-                    self?.fetchPhotosForBlogPosts()
-                }
+            }, receiveValue: { [weak self] (response: BlogPostResponse) in
+                self?.fetchPhotosForBlogPosts(blogPosts: response.blogs)
             })
             .store(in: &cancellables)
     }
     
-    private func fetchPhotosForBlogPosts() {
+    private func fetchPhotosForBlogPosts(blogPosts: [BlogPost]) {
         var nextOffset = 0
+        var updatedBlogPosts = blogPosts
+        let group = DispatchGroup()
         
-        for index in blogPosts.indices {
+        for index in updatedBlogPosts.indices {
             let randomInt = Int.random(in: 2...10)
-            let blogPostId = blogPosts[index].id
-            
-            networkingService.fetchPhoto(offset: nextOffset, limit: randomInt)
-                .receive(on: DispatchQueue.global(qos: .background))
+            let blogPost = updatedBlogPosts[index]
+        
+            group.enter()
+            networkingService.fetch(endpoint: .photos, offset: nextOffset, limit: randomInt)
+                .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { completion in
                     switch completion {
                     case .failure(let error):
-                        print("Error fetching photos for blog post \(blogPostId): \(error)")
+                        print("Error fetching photos for blog post \(blogPost.id): \(error)")
                     case .finished:
-                        print("Fetched photos for blog post \(blogPostId) successfully")
+                        print("Fetched photos for blog post \(blogPost.id) successfully")
                     }
-                }, receiveValue: { [weak self] photoResponse in
-                    DispatchQueue.main.async {
-                        self?.updateBlogPostPhotos(at: index, with: photoResponse.photos)
-                    }
+                }, receiveValue: { (response: PhotoResponse) in
+                    let updatedBlogPost = BlogPost(id: blogPost.id, title: blogPost.title, description: blogPost.description, photoUrl: blogPost.photoUrl, contentHtml: blogPost.contentHtml, contentText: blogPost.contentText, category: blogPost.category, createdAt: blogPost.createdAt, updatedAt: blogPost.updatedAt, photos: response.photos)
+                    updatedBlogPosts[index] = updatedBlogPost
+                    group.leave()
                 })
                 .store(in: &cancellables)
             
             nextOffset += randomInt
         }
-    }
-    
-    private func updateBlogPostPhotos(at index: Int, with photos: [Photo]) {
-        if index < blogPosts.count {
-            let blogPost = blogPosts[index]
-            blogPost.photos = photos
-            DispatchQueue.main.async {
-                self.blogPosts[index] = blogPost
-            }
+        
+        group.notify(queue: .main) {
+            self.blogPosts = updatedBlogPosts
         }
     }
 }

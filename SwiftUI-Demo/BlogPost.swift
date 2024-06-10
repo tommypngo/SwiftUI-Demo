@@ -18,8 +18,8 @@ class BlogPost: Codable, Identifiable, ObservableObject {
     let category: String
     let createdAt: String
     let updatedAt: String
-    @Published var photos: [Photo]? // Add this line
-
+    @Published var photos: [Photo] = []
+    
     enum CodingKeys: String, CodingKey {
         case id
         case title
@@ -42,7 +42,7 @@ class BlogPost: Codable, Identifiable, ObservableObject {
         self.category = category
         self.createdAt = createdAt
         self.updatedAt = updatedAt
-        self.photos = photos
+        self.photos = photos ?? []
     }
 }
 
