@@ -122,6 +122,9 @@ class BlogPostViewModel: ObservableObject {
 
             // Update the next offset for the next blog post
             nextOffset += randomInt
+            if nextOffset > 132 {
+                nextOffset = 0
+            }
         }
 
         // Notify the main queue when all tasks are completed

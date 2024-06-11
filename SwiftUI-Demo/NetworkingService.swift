@@ -37,7 +37,7 @@ class NetworkingService {
     private let baseURL = "https://api.slingacademy.com/v1/sample-data"
 
     // Function to fetch data from a specific endpoint
-    func fetch<T: Decodable>(endpoint: Endpoint, offset: Int = 0, limit: Int = 20) -> AnyPublisher<T, Error> {
+    func fetch<T: Decodable>(endpoint: Endpoint, offset: Int = 0, limit: Int = 10000) -> AnyPublisher<T, Error> {
 
         // Construct the URL with the endpoint, offset, and limit
         let url = URL(string: "\(baseURL)/\(endpoint.rawValue)?offset=\(offset)&limit=\(limit)")!
