@@ -13,20 +13,6 @@ import Foundation
 import Combine
 
 /*
-    Endpoint
-    - This enum represents the different endpoints available in the API.
-    - It includes cases for blog posts and photos.
- */
-enum Endpoint: String {
-
-    // Add case for blogPosts
-    case blogPosts = "blog-posts"
-
-    // Add a case for photos
-    case photos = "photos"
-}
-
-/*
     NetworkingService
     - This class is responsible for fetching data from the API.
     - It includes a function to fetch data from a specific endpoint.
@@ -37,10 +23,11 @@ class NetworkingService {
     private let baseURL = "https://api.slingacademy.com/v1/sample-data"
 
     // Function to fetch data from a specific endpoint
-    func fetch<T: Decodable>(endpoint: Endpoint, offset: Int = 0, limit: Int = 10000) -> AnyPublisher<T, Error> {
+    func fetch<T: Decodable>(urlString: String? = nil, endpoint: String) -> AnyPublisher<T, Error> {
+        
 
         // Construct the URL with the endpoint, offset, and limit
-        let url = URL(string: "\(baseURL)/\(endpoint.rawValue)?offset=\(offset)&limit=\(limit)")!
+        let url = URL(string: "\(urlString ?? baseURL)/\(endpoint)")!
 
         // Fetch the data from the URL using URLSession data task publisher
         return URLSession.shared.dataTaskPublisher(for: url)

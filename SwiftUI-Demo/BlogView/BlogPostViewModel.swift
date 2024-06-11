@@ -12,6 +12,19 @@
 import Foundation
 import Combine
 
+/*
+    Endpoint
+    - This enum represents the different endpoints available in the API.
+    - It includes cases for blog posts and photos.
+ */
+enum SlingacAdemyEndpoint: String {
+
+    // Add case for blogPosts
+    case blogPosts = "blog-posts"
+
+    // Add a case for photos
+    case photos = "photos"
+}
 
 /*
     BlogPost
@@ -38,9 +51,13 @@ class BlogPostViewModel: ObservableObject {
 
     // Function to fetch blog posts
     private func fetchBlogPosts() {
+        
+        let offset = 0
+        let limit = 1000
+        let endPoint = "\(SlingacAdemyEndpoint.blogPosts.rawValue)?offset=\(offset)&limit=\(limit)"
 
         // Fetch blog posts from the API endpoint
-        networkingService.fetch(endpoint: .blogPosts)
+        networkingService.fetch(endpoint: endPoint)
             // Receive on the main thread to update UI
             .receive(on: DispatchQueue.main)
 
@@ -87,7 +104,8 @@ class BlogPostViewModel: ObservableObject {
             group.enter()
 
             // Fetch photos for the blog post from the API endpoint with offset and limit
-            networkingService.fetch(endpoint: .photos, offset: nextOffset, limit: randomInt)
+            let endPoint = "\(SlingacAdemyEndpoint.photos.rawValue)?offset=\(nextOffset)&limit=\(randomInt)"
+            networkingService.fetch(endpoint: endPoint)
 
                 // Receive on the main thread to update UI
                 .receive(on: DispatchQueue.main)
