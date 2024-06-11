@@ -28,8 +28,6 @@ struct BlogPostCell: View {
                 .font(.title)
                 .bold()
             
-            
-            
             Text("Category: \(blogPost.category)")
                 .font(.subheadline)
                 .foregroundColor(.gray)
@@ -115,6 +113,9 @@ struct NewContentView: View {
         NavigationView {
             List(viewModel.blogPosts) { blogPost in
                 BlogPostCell(blogPost: blogPost)
+            }
+            .refreshable {
+                viewModel.loadData()
             }
             .navigationBarTitle("Blog Posts")
             .onAppear(perform: {
