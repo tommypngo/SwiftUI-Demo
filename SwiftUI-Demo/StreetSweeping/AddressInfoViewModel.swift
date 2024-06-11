@@ -30,6 +30,7 @@ class AddressInfoViewModel: NSObject, ObservableObject, CLLocationManagerDelegat
     override init() {
         super.init()
         locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
     private func requestWhenInUseAuthorization() {

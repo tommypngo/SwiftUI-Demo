@@ -9,16 +9,27 @@ import CoreLocation
 import SwiftUI
 import MapKit
 
+// Define a consistent padding value for the edges
+let hPadding: CGFloat = 16
+let vPadding: CGFloat = 16
+
 struct AddressInfoView: View {
     @StateObject private var viewModel = AddressInfoViewModel()
     @State private var searchText = ""
-
+    
     var body: some View {
         VStack {
             SearchBar(text: $searchText, onSearch: viewModel.fetchAddressInfo)
+                .padding(.horizontal, 0)
+                .padding(.bottom, vPadding) // Add space below the SearchBar
 
+            
             MapView(coordinate: viewModel.addressInfo?.coordinate ?? CLLocationCoordinate2D())
                 .frame(height: 300)
+                .cornerRadius(10) // Rounded corners for the map
+                .shadow(radius: 5) // Subtle shadow for depth
+                .padding(.horizontal, hPadding)
+                .padding(.bottom, vPadding) // Add space below the SearchBar
                 .overlay(
                     VStack {
                         Spacer()
@@ -40,17 +51,23 @@ struct AddressInfoView: View {
                 )
             
             if viewModel.isLoading {
-                Text("Loading...")
+                ProgressView() // Use a progress indicator instead of text
+                    .padding(.bottom, vPadding) // Add space below the ProgressView
             } else if let addressInfo = viewModel.addressInfo {
                 AddressInfoSection(addressInfo: addressInfo)
+                    .transition(.slide) // Smooth transition for content
+                    .padding(.bottom, vPadding) // Add space below the AddressInfoSection
             } else {
                 Text("No address information available")
                     .foregroundColor(.secondary)
+                    .padding() // Add padding for better spacing
             }
             
-
+            
             Spacer()
         }
+        .padding() // Padding around the VStack for better spacing
+        .background(Color(.systemBackground)) // Adaptive background color
         .onAppear {
             viewModel.requestCurrentLocation()
         }
@@ -60,37 +77,70 @@ struct AddressInfoView: View {
 struct SearchBar: View {
     @Binding var text: String
     var onSearch: (String) -> Void
-
+    
     var body: some View {
         HStack {
-            TextField("Enter street number and name only", text: $text)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
-
+            TextField("Street number and name only", text: $text)
+                .padding(10)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray, lineWidth: 0.5)
+                )
+            
             Button(action: {
                 onSearch(text)
             }) {
                 Image(systemName: "magnifyingglass")
+                    .foregroundColor(.white)
+                    .padding(10)
+                    .background(Color.blue)
+                    .cornerRadius(10)
             }
-            .padding(.trailing)
         }
+        .padding(.horizontal, hPadding)
     }
 }
+
 
 struct AddressInfoSection: View {
     let addressInfo: AddressInfo
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Council Member: \(addressInfo.councilMember)")
-            Text("Street Sweeping Days: \(addressInfo.streetSweepingDays)")
-            Text("Trash Pickup Day: \(addressInfo.trashPickupDay)")
+            Text("Council Member:")
+                .font(.headline)
+                .foregroundColor(.primary)
+            Text(addressInfo.councilMember)
+                .font(.title2)
+                .foregroundColor(.secondary)
+                .padding(.bottom)
+            
+            Text("Street Sweeping Days:")
+                .font(.headline)
+                .foregroundColor(.primary)
+            Text(addressInfo.streetSweepingDays)
+                .font(.title2)
+                .foregroundColor(.secondary)
+                .padding(.bottom)
+            
+            Text("Trash Pickup Day:")
+                .font(.headline)
+                .foregroundColor(.primary)
+            Text(addressInfo.trashPickupDay)
+                .font(.title2)
+                .foregroundColor(.secondary)
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(8)
+        .frame(maxWidth: .infinity) // Match the width with MapView
+        .background(Color(.systemGroupedBackground)) // A grouped background color
+        .cornerRadius(10)
+        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2) // Subtle shadow for depth
+        .padding(.horizontal, hPadding) // Match the horizontal padding with MapView
     }
 }
+
 
 // Preview the StreetSweepingContentView
 /*
