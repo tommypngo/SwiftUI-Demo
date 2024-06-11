@@ -15,7 +15,7 @@
 		73D390952C1656F8001A4892 /* BlogPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390942C1656F8001A4892 /* BlogPost.swift */; };
 		73D390972C1657B4001A4892 /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390962C1657B4001A4892 /* NetworkingService.swift */; };
 		73D390992C165A76001A4892 /* BlogPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390982C165A76001A4892 /* BlogPostViewModel.swift */; };
-		73D5625C2C18E642000EDF82 /* StreetSweepingContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5625B2C18E642000EDF82 /* StreetSweepingContentView.swift */; };
+		73D5625C2C18E642000EDF82 /* AddressInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5625B2C18E642000EDF82 /* AddressInfoView.swift */; };
 		73D562602C18EEF8000EDF82 /* AddressInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5625F2C18EEF8000EDF82 /* AddressInfoViewModel.swift */; };
 		73D562622C18F313000EDF82 /* AddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D562612C18F313000EDF82 /* AddressInfo.swift */; };
 		73D562642C18F522000EDF82 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D562632C18F522000EDF82 /* MapView.swift */; };
@@ -31,10 +31,11 @@
 		73D390942C1656F8001A4892 /* BlogPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogPost.swift; sourceTree = "<group>"; };
 		73D390962C1657B4001A4892 /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
 		73D390982C165A76001A4892 /* BlogPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogPostViewModel.swift; sourceTree = "<group>"; };
-		73D5625B2C18E642000EDF82 /* StreetSweepingContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreetSweepingContentView.swift; sourceTree = "<group>"; };
+		73D5625B2C18E642000EDF82 /* AddressInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoView.swift; sourceTree = "<group>"; };
 		73D5625F2C18EEF8000EDF82 /* AddressInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfoViewModel.swift; sourceTree = "<group>"; };
 		73D562612C18F313000EDF82 /* AddressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfo.swift; sourceTree = "<group>"; };
 		73D562632C18F522000EDF82 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		73D562652C18FD3B000EDF82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +68,7 @@
 		731E95352C11841D00395F03 /* SwiftUI-Demo */ = {
 			isa = PBXGroup;
 			children = (
+				73D562652C18FD3B000EDF82 /* Info.plist */,
 				731E95362C11841D00395F03 /* SwiftUI_DemoApp.swift */,
 				73D390962C1657B4001A4892 /* NetworkingService.swift */,
 				73D5625D2C18EEBF000EDF82 /* StreetSweeping */,
@@ -88,7 +90,7 @@
 		73D5625D2C18EEBF000EDF82 /* StreetSweeping */ = {
 			isa = PBXGroup;
 			children = (
-				73D5625B2C18E642000EDF82 /* StreetSweepingContentView.swift */,
+				73D5625B2C18E642000EDF82 /* AddressInfoView.swift */,
 				73D5625F2C18EEF8000EDF82 /* AddressInfoViewModel.swift */,
 				73D562612C18F313000EDF82 /* AddressInfo.swift */,
 				73D562632C18F522000EDF82 /* MapView.swift */,
@@ -183,7 +185,7 @@
 				73D562602C18EEF8000EDF82 /* AddressInfoViewModel.swift in Sources */,
 				73D390932C1656D7001A4892 /* NewContentView.swift in Sources */,
 				73D390952C1656F8001A4892 /* BlogPost.swift in Sources */,
-				73D5625C2C18E642000EDF82 /* StreetSweepingContentView.swift in Sources */,
+				73D5625C2C18E642000EDF82 /* AddressInfoView.swift in Sources */,
 				73D562642C18F522000EDF82 /* MapView.swift in Sources */,
 				73D562622C18F313000EDF82 /* AddressInfo.swift in Sources */,
 				731E95372C11841D00395F03 /* SwiftUI_DemoApp.swift in Sources */,
@@ -323,6 +325,9 @@
 				DEVELOPMENT_TEAM = Y29L9FGDHK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SwiftUI-Demo/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Street Sweeping Alert";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -353,6 +358,9 @@
 				DEVELOPMENT_TEAM = Y29L9FGDHK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SwiftUI-Demo/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Street Sweeping Alert";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
