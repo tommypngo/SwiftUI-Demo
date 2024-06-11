@@ -12,61 +12,61 @@
 import SwiftUI
 
 /*
-    BlogPostCell
-    - This view represents a single blog post cell in the list.
-    - It displays the blog post title, category, photo, description, content, photos, and created date.
-    - It includes a button to toggle between showing full content and limited content.
+ BlogPostCell
+ - This view represents a single blog post cell in the list.
+ - It displays the blog post title, category, photo, description, content, photos, and created date.
+ - It includes a button to toggle between showing full content and limited content.
  */
 
 struct BlogPostCell: View {
     // Initialize BlogPost object
     @ObservedObject var blogPost: BlogPost
-
+    
     // State variable to toggle full content
     @State private var showFullContent: Bool = false
-
+    
     // Update blog post with fetched photos
     var formattedCreatedAt: String {
-
+        
         // Format the created at date
         let dateFormatter = DateFormatter()
-
+        
         // Adjusted to match the input format
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-
+        
         // Check if the date can be converted
         if let createdAtDate = dateFormatter.date(from: blogPost.createdAt) {
-
+            
             // Adjusted to match the output format
             dateFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a" // Example: "Mar 16, 2023 at 7:06 PM"
-
+            
             // Return the formatted date
             return dateFormatter.string(from: createdAtDate)
         }
-
+        
         // Return the original date if formatting fails
         return blogPost.createdAt
     }
-
+    
     // Main view body
     var body: some View {
-
+        
         // Display blog post content
         VStack(alignment: .leading, spacing: 10) {
-
+            
             // Display blog post title
             Text(blogPost.title)
                 .font(.title)
                 .bold()
-
+            
             // Display blog post category
             Text("Category: \(blogPost.category)")
                 .font(.subheadline)
                 .foregroundColor(.gray)
-
+            
             // Display blog post photo and description
             if let photoURL = URL(string: blogPost.photoUrl) {
-
+                
                 // Display blog post photo with loading indicator
                 // Use AsyncImage to load image asynchronously
                 // Use ProgressView as a placeholder while loading
@@ -79,7 +79,7 @@ struct BlogPostCell: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical)
-
+                
                 // Display blog post description in a horizontal stack
                 HStack {
                     Spacer()
@@ -88,29 +88,14 @@ struct BlogPostCell: View {
                     Spacer()
                 }
             }
-
-             // Display blog post content text or HTML content as attributed string
-            if let contentHTML = blogPost.contentHtml.data(using: .unicode),
-
-                // Convert HTML content to attributed string
-                let attributedString = try? NSAttributedString(data: contentHTML, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-
-                // Display blog post content attributed string
-                Text(attributedString.string)
-                    .font(.body)
-                    .padding(.top)
-                    // Show limited lines or full content
-                    .lineLimit(showFullContent ? nil : 5)
-            } else {
-
-                // Display blog post content text
-                Text(blogPost.contentText)
-                    .font(.body)
-                    .padding(.top)
-                    // Show limited lines or full content
-                    .lineLimit(showFullContent ? nil : 5)
-            }
-
+            
+            // Display blog post content text
+            Text(blogPost.contentText)
+                .font(.body)
+                .padding(.top)
+            // Show limited lines or full content
+                .lineLimit(showFullContent ? nil : 5)
+            
             // Button to toggle full content
             Button(action: {
                 showFullContent.toggle()
@@ -124,20 +109,20 @@ struct BlogPostCell: View {
                 }
             }
             .padding(.top, 5)
-
+            
             // Display blog post photos
             if !blogPost.photos.isEmpty {
-
+                
                 // Display photos count
                 Text("Photos (\(blogPost.photos.count))")
                     .font(.headline)
                     .padding(.top)
-
+                
                 // Display photos horizontally
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
                         ForEach(blogPost.photos) { photo in
-
+                            
                             // Display photo image with loading indicator
                             AsyncImage(url: URL(string: photo.url)) { image in
                                 image
@@ -151,7 +136,7 @@ struct BlogPostCell: View {
                     }
                 }
             }
-
+            
             // Display blog post created at date
             Text("Created at: \(formattedCreatedAt)")
                 .font(.footnote)
@@ -163,18 +148,18 @@ struct BlogPostCell: View {
 }
 
 /*
-    NewContentView
-    - This view displays a list of blog posts using the BlogPostCell view.
-    - It uses the BlogPostViewModel to fetch and manage the blog post data.
-    - The view includes pull-to-refresh functionality to reload the data.
-    - The data is loaded when the view appears.
+ NewContentView
+ - This view displays a list of blog posts using the BlogPostCell view.
+ - It uses the BlogPostViewModel to fetch and manage the blog post data.
+ - The view includes pull-to-refresh functionality to reload the data.
+ - The data is loaded when the view appears.
  */
 
 struct NewContentView: View {
-
+    
     // Initialize BlogPostViewModel
     @ObservedObject private var viewModel = BlogPostViewModel()
-
+    
     // Main view body
     var body: some View {
         // Use NavigationView to enable navigation bar
@@ -189,10 +174,10 @@ struct NewContentView: View {
                 // Refresh data when pulling down the list
                 viewModel.loadData()
             }
-
+            
             // Set navigation bar title
             .navigationBarTitle("Blog Posts")
-
+            
             // Load data when view appears
             .onAppear(perform: {
                 viewModel.loadData()
