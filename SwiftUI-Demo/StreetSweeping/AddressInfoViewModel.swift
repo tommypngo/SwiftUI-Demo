@@ -32,8 +32,18 @@ class AddressInfoViewModel: NSObject, ObservableObject, CLLocationManagerDelegat
         locationManager.delegate = self
     }
     
-    func requestCurrentLocation() {
+    private func requestWhenInUseAuthorization() {
         locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func requestCurrentLocation() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            if CLLocationManager.locationServicesEnabled() {
+                self.locationManager.startUpdatingLocation()
+            } else {
+                self.requestWhenInUseAuthorization()
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -53,11 +63,13 @@ class AddressInfoViewModel: NSObject, ObservableObject, CLLocationManagerDelegat
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.locationManager.stopUpdatingLocation()
         guard let location = locations.last else { return }
         
+        
         fetchAddressFromLocation(location: location) { [weak self] fullAddress in
-            guard let fullAddress else { return }
-            self?.fetchAddressInfo(query: fullAddress)
+            guard let self, let fullAddress else { return }
+            self.fetchAddressInfo(query: fullAddress)
         }
     }
     

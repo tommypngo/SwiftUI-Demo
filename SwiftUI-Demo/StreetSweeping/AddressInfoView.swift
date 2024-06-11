@@ -19,6 +19,25 @@ struct AddressInfoView: View {
 
             MapView(coordinate: viewModel.addressInfo?.coordinate ?? CLLocationCoordinate2D())
                 .frame(height: 300)
+                .overlay(
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                viewModel.requestCurrentLocation()
+                            }) {
+                                Image(systemName: "location.circle.fill")
+                                    .font(.title)
+                                    .padding()
+                                    .background(Color.primary.opacity(0.75))
+                                    .clipShape(Circle())
+                                    .foregroundColor(.white)
+                            }
+                            .padding()
+                        }
+                    }
+                )
             
             if viewModel.isLoading {
                 Text("Loading...")
@@ -44,7 +63,7 @@ struct SearchBar: View {
 
     var body: some View {
         HStack {
-            TextField("Enter an address", text: $text)
+            TextField("Enter street number and name only", text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.horizontal)
 
