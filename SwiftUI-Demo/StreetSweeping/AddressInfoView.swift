@@ -16,13 +16,35 @@ let vPadding: CGFloat = 16
 struct AddressInfoView: View {
     @StateObject private var viewModel = AddressInfoViewModel()
     @State private var searchText = ""
+    @Environment(\.presentationMode) var presentationMode // For dismissing the view
     
     var body: some View {
         VStack {
+            // Custom Back Button
+            HStack {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss() // Dismiss the view
+                }) {
+                    Image(systemName: "arrow.left")
+                    Text("Back")
+                }
+                Spacer()
+                
+                // Navigation Title
+                Text("Address Information")
+                    .font(.headline)
+                    .padding(.leading, -30) // Adjust the padding as needed
+                
+                Spacer()
+            }
+            .padding()
+            
+            
+            
             SearchBar(text: $searchText, onSearch: viewModel.fetchAddressInfo)
                 .padding(.horizontal, 0)
                 .padding(.bottom, vPadding) // Add space below the SearchBar
-
+            
             
             MapView(coordinate: viewModel.addressInfo?.coordinate ?? CLLocationCoordinate2D())
                 .frame(height: 300)
@@ -63,11 +85,12 @@ struct AddressInfoView: View {
                     .padding() // Add padding for better spacing
             }
             
-            
             Spacer()
         }
         .padding() // Padding around the VStack for better spacing
         .background(Color(.systemBackground)) // Adaptive background color
+        .navigationBarTitle("") // Set the navigation bar title to an empty string
+        .navigationBarHidden(true) // Hide the navigation bar
         .onAppear {
             viewModel.requestCurrentLocation()
         }
@@ -123,6 +146,9 @@ struct AddressInfoSection: View {
             Text(addressInfo.streetSweepingDays)
                 .font(.title2)
                 .foregroundColor(.secondary)
+            Text(isStreetSweepingDay(sweepingDays: addressInfo.streetSweepingDays) ? "Today" : "Not Today")
+                .font(.title2)
+                .foregroundColor(isStreetSweepingDay(sweepingDays: addressInfo.streetSweepingDays) ? .red : .green)
                 .padding(.bottom)
             
             Text("Trash Pickup Day:")
@@ -138,6 +164,50 @@ struct AddressInfoSection: View {
         .cornerRadius(10)
         .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2) // Subtle shadow for depth
         .padding(.horizontal, hPadding) // Match the horizontal padding with MapView
+    }
+    
+    func isStreetSweepingDay(sweepingDays: String) -> Bool {
+        let calendar = Calendar.current
+        let today = Date()
+        let components = calendar.dateComponents([.year, .month, .weekday, .weekdayOrdinal], from: today)
+        
+        guard let year = components.year, let month = components.month, let weekday = components.weekday, let weekdayOrdinal = components.weekdayOrdinal else {
+            return false
+        }
+        
+        // Define a dictionary to map weekdays to their corresponding number
+        let weekDaysDict = ["Monday": 2, "Tuesday": 3, "Wednesday": 4, "Thursday": 5, "Friday": 6]
+        
+        // Split the input string into components
+        let dayComponents = sweepingDays.components(separatedBy: " ")
+        
+        // Check if the input string is valid
+        if dayComponents.count == 4, let weekDayNumber = weekDaysDict[dayComponents[3]] {
+            
+            let firstWeek = (dayComponents[0] == "1st") || (dayComponents[2] == "1st")
+            let secondWeek = (dayComponents[0] == "2nd") || (dayComponents[2] == "2nd")
+            let thirdWeek = (dayComponents[0] == "3rd") || (dayComponents[2] == "3rd")
+            let fourthWeek = (dayComponents[0] == "4th") || (dayComponents[2] == "4th")
+            
+            // Check if today is the specified weekday
+
+            if weekday == weekDayNumber {
+                switch weekdayOrdinal {
+                case 1:
+                    return firstWeek
+                case 2:
+                    return secondWeek
+                case 3:
+                    return thirdWeek
+                case 4:
+                    return fourthWeek
+                default:
+                    return false
+                }
+            }
+        }
+        
+        return false
     }
 }
 

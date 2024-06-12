@@ -19,6 +19,7 @@
 		73D562602C18EEF8000EDF82 /* AddressInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5625F2C18EEF8000EDF82 /* AddressInfoViewModel.swift */; };
 		73D562622C18F313000EDF82 /* AddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D562612C18F313000EDF82 /* AddressInfo.swift */; };
 		73D562642C18F522000EDF82 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D562632C18F522000EDF82 /* MapView.swift */; };
+		73D562672C191991000EDF82 /* CitiesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D562662C191991000EDF82 /* CitiesListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		73D562612C18F313000EDF82 /* AddressInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInfo.swift; sourceTree = "<group>"; };
 		73D562632C18F522000EDF82 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		73D562652C18FD3B000EDF82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		73D562662C191991000EDF82 /* CitiesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				73D5625B2C18E642000EDF82 /* AddressInfoView.swift */,
+				73D562662C191991000EDF82 /* CitiesListView.swift */,
 				73D5625F2C18EEF8000EDF82 /* AddressInfoViewModel.swift */,
 				73D562612C18F313000EDF82 /* AddressInfo.swift */,
 				73D562632C18F522000EDF82 /* MapView.swift */,
@@ -186,6 +189,7 @@
 				73D390932C1656D7001A4892 /* NewContentView.swift in Sources */,
 				73D390952C1656F8001A4892 /* BlogPost.swift in Sources */,
 				73D5625C2C18E642000EDF82 /* AddressInfoView.swift in Sources */,
+				73D562672C191991000EDF82 /* CitiesListView.swift in Sources */,
 				73D562642C18F522000EDF82 /* MapView.swift in Sources */,
 				73D562622C18F313000EDF82 /* AddressInfo.swift in Sources */,
 				731E95372C11841D00395F03 /* SwiftUI_DemoApp.swift in Sources */,
