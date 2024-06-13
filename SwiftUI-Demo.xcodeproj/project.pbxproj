@@ -11,6 +11,8 @@
 		731E953B2C11841F00395F03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 731E953A2C11841F00395F03 /* Assets.xcassets */; };
 		731E953E2C11841F00395F03 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 731E953D2C11841F00395F03 /* Preview Assets.xcassets */; };
 		734575812C1A83F200A860FE /* KeyboardResponsiveModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734575802C1A83F200A860FE /* KeyboardResponsiveModifier.swift */; };
+		734575832C1A8B5D00A860FE /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734575822C1A8B5D00A860FE /* NotificationDelegate.swift */; };
+		734575852C1AA30300A860FE /* ContentViewExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734575842C1AA30300A860FE /* ContentViewExample.swift */; };
 		7397623B2C1768C600173528 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7397623A2C1768C600173528 /* Photo.swift */; };
 		73D390932C1656D7001A4892 /* NewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390922C1656D7001A4892 /* NewContentView.swift */; };
 		73D390952C1656F8001A4892 /* BlogPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390942C1656F8001A4892 /* BlogPost.swift */; };
@@ -29,6 +31,8 @@
 		731E953A2C11841F00395F03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		731E953D2C11841F00395F03 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		734575802C1A83F200A860FE /* KeyboardResponsiveModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponsiveModifier.swift; sourceTree = "<group>"; };
+		734575822C1A8B5D00A860FE /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
+		734575842C1AA30300A860FE /* ContentViewExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewExample.swift; sourceTree = "<group>"; };
 		7397623A2C1768C600173528 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		73D390922C1656D7001A4892 /* NewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContentView.swift; sourceTree = "<group>"; };
 		73D390942C1656F8001A4892 /* BlogPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogPost.swift; sourceTree = "<group>"; };
@@ -75,6 +79,7 @@
 				73D562652C18FD3B000EDF82 /* Info.plist */,
 				731E95362C11841D00395F03 /* SwiftUI_DemoApp.swift */,
 				73D390962C1657B4001A4892 /* NetworkingService.swift */,
+				734575842C1AA30300A860FE /* ContentViewExample.swift */,
 				73D5625D2C18EEBF000EDF82 /* StreetSweeping */,
 				73D5625E2C18EED9000EDF82 /* BlogView */,
 				731E953A2C11841F00395F03 /* Assets.xcassets */,
@@ -100,6 +105,7 @@
 				73D5625F2C18EEF8000EDF82 /* AddressInfoViewModel.swift */,
 				73D562612C18F313000EDF82 /* AddressInfo.swift */,
 				73D562632C18F522000EDF82 /* MapView.swift */,
+				734575822C1A8B5D00A860FE /* NotificationDelegate.swift */,
 			);
 			path = StreetSweeping;
 			sourceTree = "<group>";
@@ -192,9 +198,11 @@
 				73D390932C1656D7001A4892 /* NewContentView.swift in Sources */,
 				73D390952C1656F8001A4892 /* BlogPost.swift in Sources */,
 				73D5625C2C18E642000EDF82 /* AddressInfoView.swift in Sources */,
+				734575832C1A8B5D00A860FE /* NotificationDelegate.swift in Sources */,
 				73D562672C191991000EDF82 /* CitiesListView.swift in Sources */,
 				73D562642C18F522000EDF82 /* MapView.swift in Sources */,
 				73D562622C18F313000EDF82 /* AddressInfo.swift in Sources */,
+				734575852C1AA30300A860FE /* ContentViewExample.swift in Sources */,
 				734575812C1A83F200A860FE /* KeyboardResponsiveModifier.swift in Sources */,
 				731E95372C11841D00395F03 /* SwiftUI_DemoApp.swift in Sources */,
 			);

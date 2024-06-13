@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CitiesListView: View {
+    var viewModel = AddressInfoViewModel()
+    
     var body: some View {
         NavigationView {
             List {
