@@ -19,80 +19,83 @@ struct AddressInfoView: View {
     @Environment(\.presentationMode) var presentationMode // For dismissing the view
     
     var body: some View {
-        VStack {
-            // Custom Back Button
-            HStack {
-                Button(action: {
-                    self.presentationMode.wrappedValue.dismiss() // Dismiss the view
-                }) {
-                    Image(systemName: "arrow.left")
-                    Text("Back")
-                }
-                Spacer()
-                
-                // Navigation Title
-                Text("Address Information")
-                    .font(.headline)
-                    .padding(.leading, -30) // Adjust the padding as needed
-                
-                Spacer()
-            }
-            .padding()
-            
-            
-            
-            SearchBar(text: $searchText, onSearch: viewModel.fetchAddressInfo)
-                .padding(.horizontal, 0)
-                .padding(.bottom, vPadding) // Add space below the SearchBar
-            
-            
-            MapView(coordinate: viewModel.addressInfo?.coordinate ?? CLLocationCoordinate2D())
-                .frame(height: 300)
-                .cornerRadius(10) // Rounded corners for the map
-                .shadow(radius: 5) // Subtle shadow for depth
-                .padding(.horizontal, hPadding)
-                .padding(.bottom, vPadding) // Add space below the SearchBar
-                .overlay(
-                    VStack {
-                        Spacer()
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                viewModel.requestCurrentLocation()
-                            }) {
-                                Image(systemName: "location.circle.fill")
-                                    .font(.title)
-                                    .padding()
-                                    .background(Color.primary.opacity(0.75))
-                                    .clipShape(Circle())
-                                    .foregroundColor(.white)
-                            }
-                            .padding()
-                        }
+        ScrollView {
+            VStack {
+                // Custom Back Button
+                HStack {
+                    Button(action: {
+                        self.presentationMode.wrappedValue.dismiss() // Dismiss the view
+                    }) {
+                        Image(systemName: "arrow.left")
+                        Text("Back")
                     }
-                )
-            
-            if viewModel.isLoading {
-                ProgressView() // Use a progress indicator instead of text
-                    .padding(.bottom, vPadding) // Add space below the ProgressView
-            } else if let addressInfo = viewModel.addressInfo {
-                AddressInfoSection(addressInfo: addressInfo)
-                    .transition(.slide) // Smooth transition for content
-                    .padding(.bottom, vPadding) // Add space below the AddressInfoSection
-            } else {
-                Text("No address information available")
-                    .foregroundColor(.secondary)
-                    .padding() // Add padding for better spacing
+                    Spacer()
+                    
+                    // Navigation Title
+                    Text("Address Information")
+                        .font(.headline)
+                        .padding(.leading, -30) // Adjust the padding as needed
+                    
+                    Spacer()
+                }
+                .padding()
+                
+                
+                
+                SearchBar(text: $searchText, onSearch: viewModel.fetchAddressInfo)
+                    .padding(.horizontal, 0)
+                    .padding(.bottom, vPadding) // Add space below the SearchBar
+                
+                
+                MapView(coordinate: viewModel.addressInfo?.coordinate ?? CLLocationCoordinate2D())
+                    .frame(height: 300)
+                    .cornerRadius(10) // Rounded corners for the map
+                    .shadow(radius: 5) // Subtle shadow for depth
+                    .padding(.horizontal, hPadding)
+                    .padding(.bottom, vPadding) // Add space below the SearchBar
+                    .overlay(
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    viewModel.requestCurrentLocation()
+                                }) {
+                                    Image(systemName: "location.circle.fill")
+                                        .font(.title)
+                                        .padding()
+                                        .background(Color.primary.opacity(0.75))
+                                        .clipShape(Circle())
+                                        .foregroundColor(.white)
+                                }
+                                .padding()
+                            }
+                        }
+                    )
+                
+                if viewModel.isLoading {
+                    ProgressView() // Use a progress indicator instead of text
+                        .padding(.bottom, vPadding) // Add space below the ProgressView
+                } else if let addressInfo = viewModel.addressInfo {
+                    AddressInfoSection(addressInfo: addressInfo)
+                        .transition(.slide) // Smooth transition for content
+                        .padding(.bottom, vPadding) // Add space below the AddressInfoSection
+                } else {
+                    Text("No address information available")
+                        .foregroundColor(.secondary)
+                        .padding() // Add padding for better spacing
+                }
+                
+                Spacer()
             }
-            
-            Spacer()
-        }
-        .padding() // Padding around the VStack for better spacing
-        .background(Color(.systemBackground)) // Adaptive background color
-        .navigationBarTitle("") // Set the navigation bar title to an empty string
-        .navigationBarHidden(true) // Hide the navigation bar
-        .onAppear {
-            viewModel.requestCurrentLocation()
+            .keyboardAwarePadding()
+            .padding() // Padding around the VStack for better spacing
+            .background(Color(.systemBackground)) // Adaptive background color
+            .navigationBarTitle("") // Set the navigation bar title to an empty string
+            .navigationBarHidden(true) // Hide the navigation bar
+            .onAppear {
+                viewModel.requestCurrentLocation()
+            }
         }
     }
 }
