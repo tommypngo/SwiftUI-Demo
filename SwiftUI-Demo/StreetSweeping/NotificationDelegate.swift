@@ -47,49 +47,26 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
 
         completionHandler([])
     }
-
+    
     private func isStreetSweepingDay(sweepingDays: String) -> Bool {
-        // Your existing isStreetSweepingDay implementation
         let calendar = Calendar.current
         let today = Date()
-        let components = calendar.dateComponents([.year, .month, .weekday, .weekdayOrdinal], from: today)
-        
-        guard let year = components.year, let month = components.month, let weekday = components.weekday, let weekdayOrdinal = components.weekdayOrdinal else {
+        guard let components = calendar.dateComponents([.weekday, .weekdayOrdinal], from: today),
+              let weekday = components.weekday,
+              let weekdayOrdinal = components.weekdayOrdinal else {
             return false
         }
         
-        // Define a dictionary to map weekdays to their corresponding number
         let weekDaysDict = ["Monday": 2, "Tuesday": 3, "Wednesday": 4, "Thursday": 5, "Friday": 6]
+        let ordinalDict = ["1st": 1, "2nd": 2, "3rd": 3, "4th": 4]
         
-        // Split the input string into components
         let dayComponents = sweepingDays.components(separatedBy: " ")
-        
-        // Check if the input string is valid
-        if dayComponents.count == 4, let weekDayNumber = weekDaysDict[dayComponents[3]] {
-            
-            let firstWeek = (dayComponents[0] == "1st") || (dayComponents[2] == "1st")
-            let secondWeek = (dayComponents[0] == "2nd") || (dayComponents[2] == "2nd")
-            let thirdWeek = (dayComponents[0] == "3rd") || (dayComponents[2] == "3rd")
-            let fourthWeek = (dayComponents[0] == "4th") || (dayComponents[2] == "4th")
-            
-            // Check if today is the specified weekday
-
-            if weekday == weekDayNumber {
-                switch weekdayOrdinal {
-                case 1:
-                    return firstWeek
-                case 2:
-                    return secondWeek
-                case 3:
-                    return thirdWeek
-                case 4:
-                    return fourthWeek
-                default:
-                    return false
-                }
-            }
+        guard dayComponents.count == 3,
+              let sweepWeekday = weekDaysDict[dayComponents[2]],
+              let sweepOrdinal = ordinalDict[dayComponents[0]] else {
+            return false
         }
         
-        return false
+        return weekday == sweepWeekday && weekdayOrdinal == sweepOrdinal
     }
 }
