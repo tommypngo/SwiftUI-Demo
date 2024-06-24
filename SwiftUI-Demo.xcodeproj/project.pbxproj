@@ -12,6 +12,8 @@
 		731E953E2C11841F00395F03 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 731E953D2C11841F00395F03 /* Preview Assets.xcassets */; };
 		734575812C1A83F200A860FE /* KeyboardResponsiveModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734575802C1A83F200A860FE /* KeyboardResponsiveModifier.swift */; };
 		7397623B2C1768C600173528 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7397623A2C1768C600173528 /* Photo.swift */; };
+		73A99FAE2C28FF9A005DCEAA /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A99FAD2C28FF97005DCEAA /* Sidebar.swift */; };
+		73A99FB12C29001F005DCEAA /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A99FB02C29001E005DCEAA /* City.swift */; };
 		73D390932C1656D7001A4892 /* NewContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390922C1656D7001A4892 /* NewContentView.swift */; };
 		73D390952C1656F8001A4892 /* BlogPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390942C1656F8001A4892 /* BlogPost.swift */; };
 		73D390972C1657B4001A4892 /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D390962C1657B4001A4892 /* NetworkingService.swift */; };
@@ -30,6 +32,8 @@
 		731E953D2C11841F00395F03 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		734575802C1A83F200A860FE /* KeyboardResponsiveModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponsiveModifier.swift; sourceTree = "<group>"; };
 		7397623A2C1768C600173528 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		73A99FAD2C28FF97005DCEAA /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		73A99FB02C29001E005DCEAA /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		73D390922C1656D7001A4892 /* NewContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewContentView.swift; sourceTree = "<group>"; };
 		73D390942C1656F8001A4892 /* BlogPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogPost.swift; sourceTree = "<group>"; };
 		73D390962C1657B4001A4892 /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
@@ -91,6 +95,22 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		73A99FAC2C28FF66005DCEAA /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				73A99FAD2C28FF97005DCEAA /* Sidebar.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		73A99FAF2C290014005DCEAA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				73A99FB02C29001E005DCEAA /* City.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		73D5625D2C18EEBF000EDF82 /* StreetSweeping */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +120,8 @@
 				73D5625F2C18EEF8000EDF82 /* AddressInfoViewModel.swift */,
 				73D562612C18F313000EDF82 /* AddressInfo.swift */,
 				73D562632C18F522000EDF82 /* MapView.swift */,
+				73A99FAF2C290014005DCEAA /* Model */,
+				73A99FAC2C28FF66005DCEAA /* Navigation */,
 			);
 			path = StreetSweeping;
 			sourceTree = "<group>";
@@ -187,11 +209,13 @@
 			files = (
 				7397623B2C1768C600173528 /* Photo.swift in Sources */,
 				73D390992C165A76001A4892 /* BlogPostViewModel.swift in Sources */,
+				73A99FB12C29001F005DCEAA /* City.swift in Sources */,
 				73D390972C1657B4001A4892 /* NetworkingService.swift in Sources */,
 				73D562602C18EEF8000EDF82 /* AddressInfoViewModel.swift in Sources */,
 				73D390932C1656D7001A4892 /* NewContentView.swift in Sources */,
 				73D390952C1656F8001A4892 /* BlogPost.swift in Sources */,
 				73D5625C2C18E642000EDF82 /* AddressInfoView.swift in Sources */,
+				73A99FAE2C28FF9A005DCEAA /* Sidebar.swift in Sources */,
 				73D562672C191991000EDF82 /* CitiesListView.swift in Sources */,
 				73D562642C18F522000EDF82 /* MapView.swift in Sources */,
 				73D562622C18F313000EDF82 /* AddressInfo.swift in Sources */,
