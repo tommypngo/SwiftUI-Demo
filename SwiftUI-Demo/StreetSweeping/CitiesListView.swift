@@ -26,7 +26,8 @@ struct CitiesListView: View {
             Sidebar(selection: $selection)
         } detail: {
             NavigationStack(path: $path) {
-                AddressInfoView()
+                AddressView()
+                //AddressInfoView()
                 //DetailColumn(selection: $selection, model: model)
             }
         }
@@ -63,6 +64,6 @@ struct CitiesListView: View {
     }
 }
 
-#Preview {
-    CitiesListView()
-}
+//#Preview {
+//    CitiesListView()
+//}

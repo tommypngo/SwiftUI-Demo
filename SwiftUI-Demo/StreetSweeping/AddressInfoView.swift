@@ -19,90 +19,96 @@ struct AddressInfoView: View {
     @Environment(\.presentationMode) var presentationMode // For dismissing the view
     
     var body: some View {
-        ScrollView {
-            VStack {
-                // Custom Back Button
-                HStack {
-                    Button(action: {
-                        self.presentationMode.wrappedValue.dismiss() // Dismiss the view
-                    }) {
-                        Image(systemName: "arrow.left")
-                        Text("Back")
-                    }
-                    Spacer()
-                    
-                    // Navigation Title
-                    Text("Address Information")
-                        .font(.headline)
-                        .padding(.leading, -30) // Adjust the padding as needed
-                    
-                    Spacer()
-                }
-                .padding()
-                
-                
-                
-                SearchBar(text: $searchText, onSearch: viewModel.fetchAddressInfo)
-                    .padding(.horizontal, 0)
-                    .padding(.bottom, vPadding) // Add space below the SearchBar
-                
-                
-                MapView(coordinate: viewModel.addressInfo?.coordinate ?? CLLocationCoordinate2D())
-                    .frame(height: 300)
-                    .cornerRadius(10) // Rounded corners for the map
-                    .shadow(radius: 5) // Subtle shadow for depth
-                    .padding(.horizontal, hPadding)
-                    .padding(.bottom, vPadding) // Add space below the SearchBar
-                    .overlay(
-                        VStack {
-                            Spacer()
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    viewModel.requestCurrentLocation()
-                                }) {
-                                    Image(systemName: "location.circle.fill")
-                                        .font(.title)
-                                        .padding()
-                                        .background(Color.primary.opacity(0.75))
-                                        .clipShape(Circle())
-                                        .foregroundColor(.white)
-                                }
-                                .padding()
-                            }
+        ZStack {
+            ScrollView {
+                VStack {
+                    // Custom Back Button
+                    HStack {
+                        Button(action: {
+                            self.presentationMode.wrappedValue.dismiss() // Dismiss the view
+                        }) {
+                            Image(systemName: "arrow.left")
+                            Text("Back")
                         }
-                    )
-                
-                if viewModel.isLoading {
-                    ProgressView() // Use a progress indicator instead of text
-                        .padding(.bottom, vPadding) // Add space below the ProgressView
-                } else if let addressInfo = viewModel.addressInfo {
-                    AddressInfoSection(addressInfo: addressInfo)
-                        .transition(.slide) // Smooth transition for content
-                        .padding(.bottom, vPadding) // Add space below the AddressInfoSection
-                } else {
-                    Text("No address information available")
-                        .foregroundColor(.secondary)
-                        .padding() // Add padding for better spacing
+                        Spacer()
+                        
+                        // Navigation Title
+                        Text("Address Information")
+                            .font(.headline)
+                            .padding(.leading, -30) // Adjust the padding as needed
+                        
+                        Spacer()
+                    }
+                    .padding()
+                    
+                    
+                    
+                    //                SearchBar(text: $searchText, onSearch: viewModel.fetchAddressInfo)
+                    //                    .padding(.horizontal, 0)
+                    //                    .padding(.bottom, vPadding) // Add space below the SearchBar
+                    
+                    
+                    MapView(coordinate: viewModel.addressInfo?.coordinate ?? CLLocationCoordinate2D())
+                        .frame(height: 300)
+                        .cornerRadius(10) // Rounded corners for the map
+                        .shadow(radius: 5) // Subtle shadow for depth
+                        .padding(.horizontal, hPadding)
+                        .padding(.bottom, vPadding) // Add space below the SearchBar
+                        .overlay(
+                            VStack {
+                                Spacer()
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        viewModel.requestCurrentLocation()
+                                    }) {
+                                        Image(systemName: "location.circle.fill")
+                                            .font(.title)
+                                            .padding()
+                                            .background(Color.primary.opacity(0.75))
+                                            .clipShape(Circle())
+                                            .foregroundColor(.white)
+                                    }
+                                    .padding()
+                                }
+                            }
+                        )
+                    
+                    if viewModel.isLoading {
+                        ProgressView() // Use a progress indicator instead of text
+                            .padding(.bottom, vPadding) // Add space below the ProgressView
+                    } else if let addressInfo = viewModel.addressInfo {
+                        AddressInfoSection(addressInfo: addressInfo)
+                            .transition(.slide) // Smooth transition for content
+                            .padding(.bottom, vPadding) // Add space below the AddressInfoSection
+                    } else {
+                        Text("No address information available")
+                            .foregroundColor(.secondary)
+                            .padding() // Add padding for better spacing
+                    }
+                    
+                    Spacer()
                 }
-                
-                Spacer()
+                .keyboardAwarePadding()
+                .padding() // Padding around the VStack for better spacing
+                .background(Color(.systemBackground)) // Adaptive background color
+                .navigationBarTitle("") // Set the navigation bar title to an empty string
+                .navigationBarHidden(true) // Hide the navigation bar
+                .onAppear {
+                    viewModel.requestCurrentLocation()
+                }
             }
-            .keyboardAwarePadding()
-            .padding() // Padding around the VStack for better spacing
-            .background(Color(.systemBackground)) // Adaptive background color
-            .navigationBarTitle("") // Set the navigation bar title to an empty string
-            .navigationBarHidden(true) // Hide the navigation bar
-            .onAppear {
-                viewModel.requestCurrentLocation()
-            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background()
+            .navigationTitle("city.name")
         }
+        .searchable(text: $searchText)
     }
 }
 
 struct SearchBar: View {
     @Binding var text: String
-    var onSearch: (String) -> Void
+    var onSearch: ((String) -> Void)
     
     var body: some View {
         HStack {
@@ -135,38 +141,46 @@ struct AddressInfoSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Council Member:")
-                .font(.headline)
-                .foregroundColor(.primary)
-            Text(addressInfo.councilMember)
-                .font(.title2)
-                .foregroundColor(.secondary)
-                .padding(.bottom)
-            
-            Text("Street Sweeping Days:")
-                .font(.headline)
-                .foregroundColor(.primary)
-            Text(addressInfo.streetSweepingDays)
-                .font(.title2)
-                .foregroundColor(.secondary)
-            Text(isStreetSweepingDay(sweepingDays: addressInfo.streetSweepingDays) ? "Today" : "Not Today")
-                .font(.title2)
-                .foregroundColor(isStreetSweepingDay(sweepingDays: addressInfo.streetSweepingDays) ? .red : .green)
-                .padding(.bottom)
-            
-            Text("Trash Pickup Day:")
-                .font(.headline)
-                .foregroundColor(.primary)
-            Text(addressInfo.trashPickupDay)
-                .font(.title2)
-                .foregroundColor(.secondary)
+            Group {
+                
+                VStack {
+                    Text("Council Member:")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    Text(addressInfo.councilMember)
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                        //.padding(.bottom)
+                }
+                
+                VStack {
+                    Text("Street Sweeping Days:")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    Text(addressInfo.streetSweepingDays)
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                    Text(isStreetSweepingDay(sweepingDays: addressInfo.streetSweepingDays) ? "Today" : "Not Today")
+                        .font(.title2)
+                        .foregroundColor(isStreetSweepingDay(sweepingDays: addressInfo.streetSweepingDays) ? .red : .green)
+                }
+    
+                
+                HStack {
+                    Text("Trash Pickup Day:")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    Text(addressInfo.trashPickupDay)
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                }
+               
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding()
+            .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
         .padding()
-        .frame(maxWidth: .infinity) // Match the width with MapView
-        .background(Color(.systemGroupedBackground)) // A grouped background color
-        .cornerRadius(10)
-        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2) // Subtle shadow for depth
-        .padding(.horizontal, hPadding) // Match the horizontal padding with MapView
     }
     
     func isStreetSweepingDay(sweepingDays: String) -> Bool {
@@ -216,8 +230,7 @@ struct AddressInfoSection: View {
 
 
 // Preview the StreetSweepingContentView
-/*
- #Preview {
- AddressInfoView()
- }
- */
+
+// #Preview {
+//     AddressInfoView()
+// }
