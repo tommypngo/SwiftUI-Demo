@@ -15,6 +15,13 @@ struct AddressView: View {
     
     @ObservedObject private var viewModel = AddressInfoViewModel()
 
+    @State private var spot: LocationSpot = LocationSpot(
+        name: String(localized: "Apple Park",
+                     comment: "Apple's headquarters in California."),
+        location: CLLocation(latitude: 37.3348, longitude: -122.0090),
+        cameraDistance: 1100
+    )
+    
     @State private var attributionLink: URL?
     @State private var attributionLogo: URL?
     @State private var searchText = ""
@@ -34,7 +41,20 @@ struct AddressView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .background(alignment: .bottom) {
-                    //
+                    StreetShowCaseView(spot: spot, topSafeAreaInset: 0)
+                        .mask {
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .clear, location: 0),
+                                    .init(color: .black.opacity(0.15), location: 0.1),
+                                    .init(color: .black, location: 0.6),
+                                    .init(color: .black, location: 1)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        }
+                        .padding(.top, -150)
                 }
                 .overlay(alignment: .bottomTrailing) {
                     //

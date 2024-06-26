@@ -11,7 +11,6 @@ import MapKit
 private typealias ViewControllerRepresentable = UIViewControllerRepresentable
 
 struct DetailedMapView: ViewControllerRepresentable {
-    
     typealias ViewController = UIViewController
     
     var location: CLLocation
@@ -30,10 +29,13 @@ struct DetailedMapView: ViewControllerRepresentable {
         }
         
         override func loadView() {
-            let mapView = MKMapView()
-            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            view = mapView
             
+            //
+            let mapView = MKMapView()
+            view = mapView
+            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            //
             let configuration = MKStandardMapConfiguration(elevationStyle: .realistic, emphasisStyle: .default)
             configuration.pointOfInterestFilter = .excludingAll
             configuration.showsTraffic = false
@@ -65,8 +67,8 @@ struct DetailedMapView: ViewControllerRepresentable {
     }
 }
 
+
 #Preview {
-    DetailedMapView(location: CLLocation(latitude: 37.335_690, 
-                                         longitude: -122.013_330),
+    DetailedMapView(location: CLLocation(latitude: 37.335_690, longitude: -122.013_330), 
                     topSafeAreaInset: 0)
 }
