@@ -69,6 +69,6 @@ struct DetailedMapView: ViewControllerRepresentable {
 
 
 #Preview {
-    DetailedMapView(location: CLLocation(latitude: 37.335_690, longitude: -122.013_330), 
+    DetailedMapView(location: CLLocation(latitude: 37.335_690, longitude: -122.013_330),
                     topSafeAreaInset: 0)
 }

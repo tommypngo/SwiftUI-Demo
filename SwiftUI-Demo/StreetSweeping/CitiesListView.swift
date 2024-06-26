@@ -64,6 +64,6 @@ struct CitiesListView: View {
     }
 }
 
-//#Preview {
-//    CitiesListView()
-//}
+#Preview {
+    CitiesListView()
+}

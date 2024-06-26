@@ -11,16 +11,27 @@ import SwiftUI
 /// The view that displays street sweeping information about an address of city.
 ///
 struct AddressView: View {
-    var addressInfo: AddressInfo?
+    
     
     @ObservedObject private var viewModel = AddressInfoViewModel()
-
-    @State private var spot: LocationSpot = LocationSpot(
-        name: String(localized: "Apple Park",
-                     comment: "Apple's headquarters in California."),
-        location: CLLocation(latitude: 37.3348, longitude: -122.0090),
-        cameraDistance: 1100
-    )
+    
+    private var addressInfo: AddressInfo? {
+        return viewModel.addressInfo
+    }
+    
+    private var spot: LocationSpot {
+        let location = viewModel.addressInfo != nil ?
+        CLLocation(latitude: Double(viewModel.addressInfo!.latitude) ?? 37.3348,
+                   longitude: Double(viewModel.addressInfo!.longitude) ?? -122.0090) :
+        CLLocation(latitude: 37.3348, longitude: -122.0090)
+        
+        return LocationSpot(
+            name: String(localized: "Test Location",
+                         comment: "Apple's headquarters in California."),
+            location: location,
+            cameraDistance: 200
+        )
+    }
     
     @State private var attributionLink: URL?
     @State private var attributionLogo: URL?
@@ -41,23 +52,64 @@ struct AddressView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .background(alignment: .bottom) {
-                    StreetShowCaseView(spot: spot, topSafeAreaInset: 0)
-                        .mask {
-                            LinearGradient(
-                                stops: [
-                                    .init(color: .clear, location: 0),
-                                    .init(color: .black.opacity(0.15), location: 0.1),
-                                    .init(color: .black, location: 0.6),
-                                    .init(color: .black, location: 1)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
+                    if viewModel.addressInfo != nil {
+                        StreetShowCaseView(spot: spot, topSafeAreaInset: 0)
+                            .mask {
+                                LinearGradient(
+                                    stops: [
+                                        .init(color: .clear, location: 0),
+                                        .init(color: .black.opacity(0.15), location: 0.1),
+                                        .init(color: .black, location: 0.6),
+                                        .init(color: .black, location: 1)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
+                            .padding(.top, -150)
+                    } else if !viewModel.isLoading {
+                        VStack {
+                            Spacer()
+                            Text("No address information available")
+                                .foregroundColor(.secondary)
+                                .padding() // Add padding for better spacing
+                            Spacer()
                         }
-                        .padding(.top, -150)
+                        .padding()
+                        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                    }
+                   
                 }
                 .overlay(alignment: .bottomTrailing) {
                     //
+                    if viewModel.isLoading {
+                        VStack {
+                            Spacer()
+                            ProgressView().padding()
+                            Spacer()
+                        }
+                        .frame(maxWidth: .greatestFiniteMagnitude, alignment: .center)
+                    } else {
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    viewModel.requestCurrentLocation()
+                                }) {
+                                    Image(systemName: "location.circle.fill")
+                                        .font(.title)
+                                        .padding()
+                                        .background(Color.primary.opacity(0.75))
+                                        .clipShape(Circle())
+                                        .foregroundColor(.white)
+                                }
+                                .padding()
+                            }
+                        }
+                    }
                 }
                 
                 
@@ -68,14 +120,14 @@ struct AddressView: View {
                             Text("Council Member")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Text(addressInfo?.councilMember ?? "John O'Neill")
+                            Text(addressInfo?.councilMember ?? "N/A")
                         }
                         
                         VStack(alignment: .leading) {
                             Text("Street Sweeping Days")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Text(addressInfo?.streetSweepingDays ?? "1st & 3rd Wednesday")
+                            Text(addressInfo?.streetSweepingDays ?? "N/A")
                             Text("Not Today")
                                 .font(.title2)
                                 .foregroundStyle(.green)
@@ -85,7 +137,7 @@ struct AddressView: View {
                             Text("Trash Pickup Day")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Text(addressInfo?.trashPickupDay ?? "Monday")
+                            Text(addressInfo?.trashPickupDay ?? "N/A")
                             Text("Today")
                                 .font(.title2)
                                 .foregroundStyle(.red)
@@ -120,7 +172,7 @@ struct AddressView: View {
         .searchable(text: $searchText)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background()
-        .navigationTitle("Title")
+        .navigationTitle(viewModel.addressInfo?.jurisdiction ?? "OC")
         .onChange(of: searchText) {
             viewModel.fetchAddressInfo(query: searchText)
         }

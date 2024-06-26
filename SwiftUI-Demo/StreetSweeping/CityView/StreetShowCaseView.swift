@@ -42,11 +42,12 @@ struct StreetShowCaseView: View {
     }
 }
 
+
 #Preview {
     StreetShowCaseView(spot: LocationSpot(
         name: String(localized: "Apple Park",
                      comment: "Apple's headquarters in California."),
-        location: CLLocation(latitude: 33.800037, longitude: -117.96845),
-        cameraDistance: 50
+        location: CLLocation(latitude: 37.335_690, longitude: -122.013_330),
+        cameraDistance: 500
     ), topSafeAreaInset: 0)
 }
